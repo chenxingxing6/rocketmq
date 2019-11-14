@@ -1,29 +1,25 @@
-## Apache RocketMQ [![Build Status](https://travis-ci.org/apache/rocketmq.svg?branch=master)](https://travis-ci.org/apache/rocketmq) [![Coverage Status](https://coveralls.io/repos/github/apache/rocketmq/badge.svg?branch=master)](https://coveralls.io/github/apache/rocketmq?branch=master)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.rocketmq/rocketmq-all/badge.svg)](http://search.maven.org/#search%7Cga%7C1%7Corg.apache.rocketmq)
-[![GitHub release](https://img.shields.io/badge/release-download-orange.svg)](https://rocketmq.apache.org/dowloading/releases)
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+## Apache RocketMQ 源码分析
 
-**[Apache RocketMQ](https://rocketmq.apache.org) is a distributed messaging and streaming platform with low latency, high performance and reliability, trillion-level capacity and flexible scalability.**
+Apache RocketMQ是一个分布式消息传递和流媒体平台，具有低延迟，高性能和可靠性，万亿级容量和灵活的可伸缩性。
+它具有多种功能：
 
-It offers a variety of features:
-
-* Pub/Sub messaging model
-* Financial grade transactional message
-* A variety of cross language clients, such as Java, C/C++, Python, Go
-* Pluggable transport protocols, such as TCP, SSL, AIO
-* Inbuilt message tracing capability, also support opentracing
-* Versatile big-data and streaming ecosytem integration
-* Message retroactivity by time or offset
-* Reliable FIFO and strict ordered messaging in the same queue
-* Efficient pull&push consumption model
-* Million-level message accumulation capacity in a single queue
-* Multiple messaging protocols like JMS and OpenMessaging
-* Flexible distributed scale-out deployment architecture
-* Lightning-fast batch message exchange system
-* Various message filter mechanics such as SQL and Tag
-* Docker images for isolated testing and cloud isolated clusters
-* Feature-rich administrative dashboard for configuration, metrics and monitoring
-* Authentication and authorisation
+* 发布/订阅消息传递模型
+* 财务级交易消息
+* 各种跨语言客户端，例如Java，C / C ++，Python，Go
+* 可插拔的传输协议，例如TCP，SSL，AIO
+* 内置的消息跟踪功能，还支持开放式跟踪
+* 多功能的大数据和流生态系统集成
+* 按时间或偏移量追溯消息
+* 可靠的FIFO和严格的有序消息传递在同一队列中
+* 高效的推拉消费模型
+* 单个队列中的百万级消息累积容量
+* 多种消息传递协议，例如JMS和OpenMessaging
+* 灵活的分布式横向扩展部署架构
+* 快如闪电的批量消息交换系统
+* 各种消息过滤器机制，例如SQL和Tag
+* 用于隔离测试和云隔离群集的Docker映像
+* 功能丰富的管理仪表板，用于配置，指标和监视
+* 认证与授权
 
 ----------
 
@@ -36,38 +32,4 @@ It offers a variety of features:
 * Ask: <https://stackoverflow.com/questions/tagged/rocketmq>
 * Slack: <https://rocketmq-invite-automation.herokuapp.com/>
  
-
-----------
-
-## Apache RocketMQ Community
-* [RocketMQ Community Projects](https://github.com/apache/rocketmq-externals)
-----------
-
-## Contributing
-We always welcome new contributions, whether for trivial cleanups, [big new features](https://github.com/apache/rocketmq/wiki/RocketMQ-Improvement-Proposal) or other material rewards, more details see [here](http://rocketmq.apache.org/docs/how-to-contribute/).
- 
-----------
-## License
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html) Copyright (C) Apache Software Foundation
-
-
-----------
-## Export Control Notice
-This distribution includes cryptographic software. The country in which you currently reside may have
-restrictions on the import, possession, use, and/or re-export to another country, of encryption software.
-BEFORE using any encryption software, please check your country's laws, regulations and policies concerning
-the import, possession, or use, and re-export of encryption software, to see if this is permitted. See
-<http://www.wassenaar.org/> for more information.
-
-The U.S. Government Department of Commerce, Bureau of Industry and Security (BIS), has classified this
-software as Export Commodity Control Number (ECCN) 5D002.C.1, which includes information security software
-using or performing cryptographic functions with asymmetric algorithms. The form and manner of this Apache
-Software Foundation distribution makes it eligible for export under the License Exception ENC Technology
-Software Unrestricted (TSU) exception (see the BIS Export Administration Regulations, Section 740.13) for
-both object code and source code.
-
-The following provides more details on the included cryptographic software:
-
-This software uses Apache Commons Crypto (https://commons.apache.org/proper/commons-crypto/) to
-support authentication, and encryption and decryption of data sent across the network between
-services.
+---
