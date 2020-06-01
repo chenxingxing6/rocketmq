@@ -1,4 +1,4 @@
-## Apache RocketMQ 源码分析
+## RocketMQ源码学习  
 
 Apache RocketMQ是一个分布式消息传递和流媒体平台，具有低延迟，高性能和可靠性，万亿级容量和灵活的可伸缩性。
 它具有多种功能：
@@ -23,14 +23,3 @@ Apache RocketMQ是一个分布式消息传递和流媒体平台，具有低延�
 
 ----------
 
-
-## Learn it & Contact us
-* Mailing Lists: <https://rocketmq.apache.org/about/contact/>
-* Home: <https://rocketmq.apache.org>
-* Docs: <https://rocketmq.apache.org/docs/quick-start/>
-* Issues: <https://github.com/apache/rocketmq/issues>
-* Rips: <https://github.com/apache/rocketmq/wiki/RocketMQ-Improvement-Proposal>
-* Ask: <https://stackoverflow.com/questions/tagged/rocketmq>
-* Slack: <https://rocketmq-invite-automation.herokuapp.com/>
- 
----
