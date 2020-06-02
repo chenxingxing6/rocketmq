@@ -56,8 +56,20 @@ RocketMQ主要的功能集中在rocketmq-broker、rocketmq-remoting、rocketmq-s
 -NettyRequestProcessor【接口】.processRequest(ctx, cmd);
 -SendMessageProcessor【具体实现类】.processRequest()    
 3.SendMessageProcessor.brokerController.getMessageStore().putMessage(msgInner);【非事务消息存储】   
-4.
+4.刷盘 
 
+
+#### consumer消息获取流程  
+DefaultMQPushConsumer:系统控制读取操作
+DefaultMQPullConsumer:读取操作大部分功能自己控制 
+
+
+#### nameserver中5个变量RouteInfoManager
+HashMap<String/* topic */, List<QueueData>> topicQueueTable;   
+HashMap<String/* brokerName */, BrokerData> brokerAddrTable;   
+HashMap<String/* clusterName */, Set<String/* brokerName */>> clusterAddrTable;   
+HashMap<String/* brokerAddr */, BrokerLiveInfo> brokerLiveTable;   
+HashMap<String/* brokerAddr */, List<String>/* Filter Server */> filterServerTable;   
 
 
 
