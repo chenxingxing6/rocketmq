@@ -22,4 +22,43 @@ Apache RocketMQ是一个分布式消息传递和流媒体平台，具有低延�
 * 认证与授权
 
 ----------
+RocketMQ源码主要分为以下几个package：
+rocketmq-broker：mq的核心，它能接收producer和consumer的请求，并调用store层服务对消息进行处理。HA服务的基本单元，支持同步双写，异步双写等模式。    
+rocketmq-client：mq客户端实现，目前官方仅仅开源了java版本的mq客户端，c++，go客户端有社区开源贡献。   
+rocketmq-common：一些模块间通用的功能类，比如一些配置文件、常量。   
+rocketmq-example：官方提供的例子，对典型的功能比如order message，push consumer，pull consumer的用法进行了示范。
+rocketmq-filter：消息过滤服务，相当于在broker和consumer中间加入了一个filter代理。   
+rocketmq-namesrv：命名服务，更新和路由发现 broker服务。    
+rocketmq-remoting：基于netty的底层通信实现，所有服务间的交互都基于此模块。  
+rocketmq-srvutil：解析命令行的工具类ServerUtil。   
+rocketmq-store：存储层实现，同时包括了索引服务，高可用HA服务实现。   
+rocketmq-tools：mq集群管理工具，提供了消息查询等功能。   
+
+----
+
+RocketMQ主要的功能集中在rocketmq-broker、rocketmq-remoting、rocketmq-store 三个模块中   
+
+#### Client生产者发送消息
+1.org.apache.rocketmq.client.producer.DefaultMQProducer.send(org.apache.rocketmq.common.message.Message)  
+2.defaultMQProducerImpl.send(msg);   
+3.DefaultMQProducerImpl.sendKernelImpl()  
+4.DefaultMQProducerImpl.mQClientFactory.getMQClientAPIImpl().sendMessage()  
+5.MQClientAPIImpl.sendMessageSync()
+6.RemotingClient.remotingClient.invokeSync(addr, request, timeoutMillis)  
+7.NettyRemotingAbstract->channel.writeAndFlush(request).addListener()  写入通道，等待Netty的Selector轮询出来
+
+
+
+#### Broker(发送消息到达Broker)后续流程
+1.消息到达Broker()
+-NettyRemotingClient.NettyClientHandler.channelRead0 
+-processMessageReceived() processRequestCommand(ctx, cmd)  
+-NettyRequestProcessor【接口】.processRequest(ctx, cmd);
+-SendMessageProcessor【具体实现类】.processRequest()    
+3.SendMessageProcessor.brokerController.getMessageStore().putMessage(msgInner);【非事务消息存储】   
+4.
+
+
+
+
 

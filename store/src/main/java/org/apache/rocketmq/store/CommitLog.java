@@ -40,7 +40,11 @@ import org.apache.rocketmq.store.ha.HAService;
 import org.apache.rocketmq.store.schedule.ScheduleMessageService;
 
 /**
- * Store all metadata downtime for recovery, data protection reliability
+ * Store all metadata downtime for recovery, data protection
+ * 最终写入CommitLog内存数据的时候进行了一步加锁处理。在写入数据之前，需要申请CommitLog.putMessageLock锁。
+ * 内存中CommitLog写入完成后会释放锁，之后的步骤也是并发处理的。
+ *
+ * 同步刷盘/异步刷盘:CommitLog.putMessage结束的最后调用CommitLog.handleDiskFlush方法
  */
 public class CommitLog {
     // Message's MAGIC CODE daa320a7
@@ -591,6 +595,7 @@ public class CommitLog {
                 return new PutMessageResult(PutMessageStatus.CREATE_MAPEDFILE_FAILED, null);
             }
 
+            // mappedFile
             result = mappedFile.appendMessage(msg, this.appendMessageCallback);
             switch (result.getStatus()) {
                 case PUT_OK:
@@ -645,8 +650,10 @@ public class CommitLog {
         return putMessageResult;
     }
 
+
+    // 刷盘处理逻辑
     public void handleDiskFlush(AppendMessageResult result, PutMessageResult putMessageResult, MessageExt messageExt) {
-        // Synchronization flush
+        // 同步刷盘
         if (FlushDiskType.SYNC_FLUSH == this.defaultMessageStore.getMessageStoreConfig().getFlushDiskType()) {
             final GroupCommitService service = (GroupCommitService) this.flushCommitLogService;
             if (messageExt.isWaitStoreMsgOK()) {
@@ -662,7 +669,7 @@ public class CommitLog {
                 service.wakeup();
             }
         }
-        // Asynchronous flush
+        // 异步刷盘
         else {
             if (!this.defaultMessageStore.getMessageStoreConfig().isTransientStorePoolEnable()) {
                 flushCommitLogService.wakeup();
@@ -957,6 +964,9 @@ public class CommitLog {
         }
     }
 
+
+    // 如果 当前时间 >（最后一次刷盘时间 + 彻底刷盘间隔时间（10s）），则将最新一次刷盘时间更新为当前时间
+    // 如果是实时刷盘，每隔一定时间间隔，该线程休眠500毫秒
     class FlushRealTimeService extends FlushCommitLogService {
         private long lastFlushTimestamp = 0;
         private long printTimes = 0;
@@ -1199,6 +1209,8 @@ public class CommitLog {
             long wroteOffset = fileFromOffset + byteBuffer.position();
 
             this.resetByteBuffer(hostHolder, 8);
+
+            // 生成msgId步骤
             String msgId = MessageDecoder.createMessageId(this.msgIdMemory, msgInner.getStoreHostBytes(hostHolder), wroteOffset);
 
             // Record ConsumeQueue information
@@ -1407,6 +1419,8 @@ public class CommitLog {
                 messagesByteBuff.position(msgPos + msgLen);
             }
 
+
+            // 最终调用byteBuffer.put()方法写入内存，并计算了耗时，将消息写入的内存的位置信息、写入耗时封装为AppendMessageResult对象返回。
             messagesByteBuff.position(0);
             messagesByteBuff.limit(totalMsgLen);
             byteBuffer.put(messagesByteBuff);
