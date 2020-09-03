@@ -74,18 +74,14 @@ public class NamesrvController {
     }
 
     public boolean initialize() {
-
         this.kvConfigManager.load();
-
         this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.brokerHousekeepingService);
-
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
-
         this.registerProcessor();
 
+        // 创建2个定时任务
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-
             @Override
             public void run() {
                 NamesrvController.this.routeInfoManager.scanNotActiveBroker();
@@ -93,13 +89,14 @@ public class NamesrvController {
         }, 5, 10, TimeUnit.SECONDS);
 
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-
             @Override
             public void run() {
                 NamesrvController.this.kvConfigManager.printAllPeriodically();
             }
         }, 1, 10, TimeUnit.MINUTES);
 
+
+        // 注册监听器
         if (TlsSystemConfig.tlsMode != TlsMode.DISABLED) {
             // Register a listener to reload SslContext
             try {
@@ -137,7 +134,6 @@ public class NamesrvController {
                 log.warn("FileWatchService created error, can't load the certificate dynamically");
             }
         }
-
         return true;
     }
 

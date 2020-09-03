@@ -137,6 +137,13 @@ public class RebalancePushImpl extends RebalanceImpl {
         this.defaultMQPushConsumerImpl.getOffsetStore().removeOffset(mq);
     }
 
+    /**
+     * 不同的ConsumeFromWhere的第一步都是依赖OffsetStore先从本地读取offset，
+     * 如果offset>-1，则表示是一个有效的值，则会已这个offset为准；如果offset=-1，
+     * 是初始值，则需要根据不同的ConsumeFromWhere去broker读取对应MessageQueue的offset
+     * @param mq
+     * @return
+     */
     @Override
     public long computePullFromWhere(MessageQueue mq) {
         long result = -1;

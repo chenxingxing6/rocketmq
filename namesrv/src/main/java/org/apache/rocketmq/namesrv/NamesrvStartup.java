@@ -143,6 +143,7 @@ public class NamesrvStartup {
             System.exit(-3);
         }
 
+        // 钩子函数，优雅停机
         Runtime.getRuntime().addShutdownHook(new ShutdownHookThread(log, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -150,9 +151,7 @@ public class NamesrvStartup {
                 return null;
             }
         }));
-
         controller.start();
-
         return controller;
     }
 
